@@ -33,7 +33,7 @@ interface NewsDataSource {
             dateFormat.timeZone = tz
             val response = service.getNews(
                 mapOf(
-                    "q" to "cryptocurrency OR bitcoin",
+                    "q" to "cryptocurrency OR bitcoin OR criptomoeda",
                     "from" to dateFormat.format(now.time),
                     "pageSize" to "20",
                     "page" to page.toString(),

@@ -61,14 +61,25 @@
         app:constraint_referenced_ids="tvArticleDescription,ivArticleImage" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvPublishInfo"
+        android:id="@+id/tvArticleAuthor"
         style="@style/AppTheme.Text.Overline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:lines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrierOverline"
-        tools:text="by Author - Jul 24" />
+        tools:text="Fulano" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvArticlePublishedAt"
+        style="@style/AppTheme.Text.Overline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tvArticleAuthor"
+        app:layout_constraintTop_toBottomOf="@id/tvArticleAuthor"
+        tools:text="Today" />
 </androidx.constraintlayout.widget.ConstraintLayout>

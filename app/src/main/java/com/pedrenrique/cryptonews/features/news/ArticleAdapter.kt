@@ -1,12 +1,7 @@
 package com.pedrenrique.cryptonews.features.news
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.View
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
 import com.pedrenrique.cryptonews.core.ext.gone
@@ -54,6 +49,8 @@ class ArticleAdapter : Adapter<ViewParams>() {
             tvArticleTitle.text = article.title
             tvArticleDescription.text = article.description
             tvArticleSource.text = article.source.name
+            tvArticleAuthor.text = article.author
+            tvArticlePublishedAt.text = article.formatDate(context)
             if (article.imageUrl != null) {
                 ivArticleImage.setRemoteImage(article.imageUrl) {
                     placeholder(R.drawable.placeholder_article_image)
@@ -63,25 +60,22 @@ class ArticleAdapter : Adapter<ViewParams>() {
             } else {
                 ivArticleImage.gone()
             }
-            tvPublishInfo.text = article.formatInfo(context)
         }
 
-        private fun Article.formatInfo(context: Context): String {
+        private fun Article.formatDate(context: Context): String {
             val publishedAt = Calendar.getInstance().apply {
                 time = publishedAt
             }.resetTime()
             val days = (now - publishedAt.timeInMillis).toInt() / (24 * 60 * 60 * 1000)
             return when (days) {
-                0 -> context.getString(R.string.text_publish_info_today, author)
-                1 -> context.getString(R.string.text_publish_info_yesterday, author)
+                0 -> context.getString(R.string.text_published_today)
+                1 -> context.getString(R.string.text_published_yesterday)
                 in 2..7 -> context.getString(
-                    R.string.text_publish_info_few_days,
-                    author,
+                    R.string.text_published_few_days,
                     days
                 )
                 else -> context.getString(
-                    R.string.text_publish_info_many_days,
-                    author,
+                    R.string.text_published_many_days,
                     publishedAt.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()),
                     publishedAt.get(Calendar.DAY_OF_MONTH)
                 )

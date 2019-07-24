@@ -11,8 +11,8 @@
     <string name="title_error_unexpected">Oops.. something went wrong</string>
     <string name="msg_error_unexpected">Please try again later.</string>
 
-    <string name="text_publish_info_today">%s - Today</string>
-    <string name="text_publish_info_yesterday">%s - Yesterday</string>
-    <string name="text_publish_info_few_days">%1$s - %2$d days ago</string>
-    <string name="text_publish_info_many_days">%1$s - %2$s %3$d</string>
+    <string name="text_published_today">Today</string>
+    <string name="text_published_yesterday">Yesterday</string>
+    <string name="text_published_few_days">%d days ago</string>
+    <string name="text_published_many_days">%1$s %2$d</string>
 </resources>
