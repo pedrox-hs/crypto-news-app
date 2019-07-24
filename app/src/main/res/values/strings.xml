@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Crypto News</string>
+    <string name="title_news">@string/app_name</string>
+
+    <string name="action_try_again">Try again</string>
+    <string name="action_load_more">Load more</string>
+
+    <string name="title_error_connection">Oops.. network problem</string>
+    <string name="msg_error_connection">Please check your internet connection and try again</string>
+
+    <string name="title_error_unexpected">Oops.. something went wrong</string>
+    <string name="msg_error_unexpected">Please try again later.</string>
+
+    <string name="text_publish_info_today">%s - Today</string>
+    <string name="text_publish_info_yesterday">%s - Yesterday</string>
+    <string name="text_publish_info_few_days">%1$s - %2$d days ago</string>
+    <string name="text_publish_info_many_days">%1$s - %2$s %3$d</string>
 </resources>

@@ -3,9 +3,34 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="fontFamily">@font/raleway</item>
+    </style>
+
+    <style name="AppTheme.Text" />
+
+    <style name="AppTheme.Text.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Title.Big" parent="TextAppearance.MaterialComponents.Headline5" />
+
+    <style name="AppTheme.Text.Body" parent="TextAppearance.AppCompat.Body1" />
+
+    <style name="AppTheme.Text.Caption" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textAllCaps">true</item>
+    </style>
+    <style name="AppTheme.Text.Overline" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="TextAppearance.AppCompat.Button" />
+
+    <style name="AppTheme.Button.Borderless" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/accent</item>
     </style>
 
 </resources>

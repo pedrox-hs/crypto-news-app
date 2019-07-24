@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/newsFragment">
+
+    <fragment
+            android:id="@+id/newsFragment"
+            android:name="com.pedrenrique.cryptonews.features.news.NewsFragment"
+            android:label="@string/title_news"
+            tools:layout="@layout/fragment_news">
+
+        <!--<action
+                android:id="@+id/showPullRequests"
+                app:destination="@+id/articleFragment">
+            <argument
+                    android:name="repository"
+                    app:argType="com.pedrenrique.cryptonews.core.data.Article"
+                    app:nullable="false" />
+        </action>-->
+    </fragment>
+</navigation>
