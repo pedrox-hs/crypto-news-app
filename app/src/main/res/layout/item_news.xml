@@ -8,17 +8,17 @@
     android:padding="16dp">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivArticleImage"
+        android:id="@+id/ivNewsImage"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="6dp"
         android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvArticleSource"
+        app:layout_constraintTop_toBottomOf="@id/tvNewsSource"
         tools:src="@drawable/ic_robot_error" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvArticleSource"
+        android:id="@+id/tvNewsSource"
         style="@style/AppTheme.Text.Caption"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -28,29 +28,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvArticleTitle"
+        android:id="@+id/tvNewsTitle"
         style="@style/AppTheme.Text.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="3"
-        app:layout_constraintEnd_toStartOf="@id/ivArticleImage"
+        app:layout_constraintEnd_toStartOf="@id/ivNewsImage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ivArticleImage"
+        app:layout_constraintTop_toTopOf="@id/ivNewsImage"
         tools:text="Title" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvArticleDescription"
+        android:id="@+id/tvNewsDescription"
         style="@style/AppTheme.Text.Body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:ellipsize="end"
         android:lines="1"
-        app:layout_constraintEnd_toEndOf="@id/tvArticleTitle"
-        app:layout_constraintStart_toStartOf="@id/tvArticleTitle"
-        app:layout_constraintTop_toBottomOf="@id/tvArticleTitle"
+        app:layout_constraintEnd_toEndOf="@id/tvNewsTitle"
+        app:layout_constraintStart_toStartOf="@id/tvNewsTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvNewsTitle"
         tools:text="Description" />
 
     <androidx.constraintlayout.widget.Barrier
@@ -58,10 +58,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="tvArticleDescription,ivArticleImage" />
+        app:constraint_referenced_ids="tvNewsDescription,ivNewsImage" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvArticleAuthor"
+        android:id="@+id/tvNewsAuthor"
         style="@style/AppTheme.Text.Overline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -74,12 +74,12 @@
         tools:text="Fulano" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvArticlePublishedAt"
+        android:id="@+id/tvNewsPublishedAt"
         style="@style/AppTheme.Text.Overline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tvArticleAuthor"
-        app:layout_constraintTop_toBottomOf="@id/tvArticleAuthor"
+        app:layout_constraintStart_toStartOf="@id/tvNewsAuthor"
+        app:layout_constraintTop_toBottomOf="@id/tvNewsAuthor"
         tools:text="Today" />
 </androidx.constraintlayout.widget.ConstraintLayout>

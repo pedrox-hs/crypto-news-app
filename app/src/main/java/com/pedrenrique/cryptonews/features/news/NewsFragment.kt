@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,10 +22,10 @@ import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.layout_error_state.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewsFragment : Fragment(), ArticleAdapter.OnItemClickListener {
+class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener {
 
     private val newsViewModel by viewModel<NewsViewModel>()
-    private val adapter = ArticleAdapter()
+    private val adapter = NewsAdapter()
 
     private val RecyclerView.linearLayoutManager: LinearLayoutManager
         get() = layoutManager as LinearLayoutManager
@@ -82,9 +83,7 @@ class NewsFragment : Fragment(), ArticleAdapter.OnItemClickListener {
         swipe.setOnRefreshListener {
             newsViewModel.refresh()
         }
-        btnTryAgain.setOnClickListener {
-            newsViewModel.load()
-        }
+        btnTryAgain.setOnClickListener {newsViewModel.load() }
     }
 
     private fun RecyclerView.setup(adapter: Adapter<ViewParams>, loadMore: () -> Unit) {
@@ -105,7 +104,10 @@ class NewsFragment : Fragment(), ArticleAdapter.OnItemClickListener {
     }
 
     override fun onClick(article: Article) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val act = activity ?: return
+        val navController = Navigation.findNavController(act, R.id.navHostFragment)
+        val showArticle = NewsFragmentDirections.showArticle(article)
+        navController.navigate(showArticle)
     }
 
     override fun onRetryClick() {

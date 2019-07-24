@@ -6,18 +6,30 @@
     app:startDestination="@id/newsFragment">
 
     <fragment
-            android:id="@+id/newsFragment"
-            android:name="com.pedrenrique.cryptonews.features.news.NewsFragment"
-            android:label="@string/title_news"
-            tools:layout="@layout/fragment_news">
+        android:id="@+id/newsFragment"
+        android:name="com.pedrenrique.cryptonews.features.news.NewsFragment"
+        android:label="@string/title_news"
+        tools:layout="@layout/fragment_news">
 
-        <!--<action
-                android:id="@+id/showPullRequests"
-                app:destination="@+id/articleFragment">
+        <action
+            android:id="@+id/showArticle"
+            app:destination="@+id/articleFragment">
             <argument
-                    android:name="repository"
-                    app:argType="com.pedrenrique.cryptonews.core.data.Article"
-                    app:nullable="false" />
-        </action>-->
+                android:name="article"
+                app:argType="com.pedrenrique.cryptonews.core.data.Article"
+                app:nullable="false" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="com.pedrenrique.cryptonews.features.article.ArticleFragment"
+        android:label="@string/title_article"
+        tools:layout="@layout/fragment_article">
+
+        <argument
+            android:name="article"
+            app:argType="com.pedrenrique.cryptonews.core.data.Article"
+            app:nullable="false" />
     </fragment>
 </navigation>

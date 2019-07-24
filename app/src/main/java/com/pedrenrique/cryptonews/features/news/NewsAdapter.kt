@@ -11,11 +11,11 @@ import com.pedrenrique.cryptonews.core.ext.show
 import com.pedrenrique.cryptonews.features.common.adapter.Adapter
 import com.pedrenrique.cryptonews.features.common.adapter.BaseViewHolder
 import com.pedrenrique.cryptonews.features.common.adapter.ViewParams
-import kotlinx.android.synthetic.main.item_article.view.*
+import kotlinx.android.synthetic.main.item_news.view.*
 import kotlinx.android.synthetic.main.item_error.view.*
 import java.util.*
 
-class ArticleAdapter : Adapter<ViewParams>() {
+class NewsAdapter : Adapter<ViewParams>() {
 
     private var onItemClickListener: OnItemClickListener? = null
 
@@ -26,7 +26,7 @@ class ArticleAdapter : Adapter<ViewParams>() {
     @Suppress("UNCHECKED_CAST")
     override fun getViewHolderForLayout(layout: Int, view: View) =
         when (layout) {
-            R.layout.item_article -> ArticleViewHolder(view)
+            R.layout.item_news -> NewsViewHolder(view)
             R.layout.item_loading -> LoadingViewHolder(view)
             R.layout.item_error -> ErrorViewHolder(view)
             else -> throw RuntimeException("Invalid layout")
@@ -35,10 +35,10 @@ class ArticleAdapter : Adapter<ViewParams>() {
     override fun getLayoutForPosition(position: Int) =
         items[position].layoutRes
 
-    inner class ArticleViewHolder(view: View) : BaseViewHolder<ArticleViewParams>(view) {
+    inner class NewsViewHolder(view: View) : BaseViewHolder<NewsViewParams>(view) {
         private val now = Calendar.getInstance().resetTime().timeInMillis
 
-        override fun bind(data: ArticleViewParams) {
+        override fun bind(data: NewsViewParams) {
             itemView.setOnClickListener {
                 onItemClickListener?.onClick(data.item)
             }
@@ -46,19 +46,19 @@ class ArticleAdapter : Adapter<ViewParams>() {
         }
 
         private fun View.populate(article: Article) {
-            tvArticleTitle.text = article.title
-            tvArticleDescription.text = article.description
-            tvArticleSource.text = article.source.name
-            tvArticleAuthor.text = article.author
-            tvArticlePublishedAt.text = article.formatDate(context)
+            tvNewsTitle.text = article.title
+            tvNewsDescription.text = article.description
+            tvNewsSource.text = article.source.name
+            tvNewsAuthor.text = article.author
+            tvNewsPublishedAt.text = article.formatDate(context)
             if (article.imageUrl != null) {
-                ivArticleImage.setRemoteImage(article.imageUrl) {
+                ivNewsImage.setRemoteImage(article.imageUrl) {
                     placeholder(R.drawable.placeholder_article_image)
                     error(R.drawable.placeholder_article_image_error)
                 }
-                ivArticleImage.show()
+                ivNewsImage.show()
             } else {
-                ivArticleImage.gone()
+                ivNewsImage.gone()
             }
         }
 

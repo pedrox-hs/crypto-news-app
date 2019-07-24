@@ -72,7 +72,7 @@ class NewsViewModel(
     ): NewsListState.Loaded {
         val data = (lastData ?: listOf()).toMutableSet()
         data.addAll(result.content.map {
-            ArticleViewParams(it)
+            NewsViewParams(it)
         })
         page = result.page
         return NewsListState.Loaded(data.toList())

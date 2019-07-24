@@ -4,8 +4,8 @@ import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
 import com.pedrenrique.cryptonews.features.common.adapter.ViewParams
 
-class ArticleViewParams(val item: Article) : ViewParams {
-    override val layoutRes = R.layout.item_article
+class NewsViewParams(val item: Article) : ViewParams {
+    override val layoutRes = R.layout.item_news
 }
 
 class LoadingViewParams : ViewParams {
