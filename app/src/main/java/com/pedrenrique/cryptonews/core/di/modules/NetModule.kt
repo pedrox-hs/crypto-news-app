@@ -71,7 +71,6 @@ val netModule = module {
     factory<Gson> {
         GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-            .disableHtmlEscaping()
             .create()
     }
 

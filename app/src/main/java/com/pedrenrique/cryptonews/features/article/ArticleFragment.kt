@@ -1,9 +1,12 @@
 package com.pedrenrique.cryptonews.features.article
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -12,6 +15,7 @@ import com.pedrenrique.cryptonews.core.data.Article
 import com.pedrenrique.cryptonews.core.ext.*
 import kotlinx.android.synthetic.main.fragment_article.*
 import java.util.*
+
 
 class ArticleFragment : Fragment() {
 
@@ -53,7 +57,14 @@ class ArticleFragment : Fragment() {
 
     private fun bindEvents() {
         btnReadMore.setOnClickListener {
-            // todo
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(args.article.url)
+            val packageManager = activity!!.packageManager
+            if (i.resolveActivity(packageManager) != null) {
+                startActivity(i)
+            } else {
+                Toast.makeText(context, R.string.msg_cant_open_article, Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

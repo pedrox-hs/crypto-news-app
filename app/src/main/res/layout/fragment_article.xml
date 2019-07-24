@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_open_in_new"
             android:drawablePadding="8dp"
-            android:text="Read more"
+            android:text="@string/action_continue_reading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvArticleContent" />

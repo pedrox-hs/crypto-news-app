@@ -31,7 +31,7 @@ interface NewsDataSource {
             now.add(Calendar.DAY_OF_YEAR, -20)
             val dateFormat = SimpleDateFormat("yyyy-MM-dd")
             dateFormat.timeZone = tz
-            val language = "pt"//Locale.getDefault().language.takeIf { it in listOf("en", "pt") } ?: "en"
+            val language = Locale.getDefault().language.takeIf { it in listOf("en", "pt") } ?: "en"
             val response = service.getNews(
                 mapOf(
                     "q" to "cryptocurrency OR criptomoeda",
