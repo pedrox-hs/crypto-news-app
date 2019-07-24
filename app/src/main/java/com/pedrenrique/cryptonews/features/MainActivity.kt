@@ -1,28 +1,31 @@
 package com.pedrenrique.cryptonews.features
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.pedrenrique.cryptonews.R
+import com.pedrenrique.cryptonews.core.ext.setTitle
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private val navController: NavController by lazy {
-        val fragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
-        fragment.navController
+        val frag = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        frag.navController
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            title = destination.label
+            supportActionBar?.setTitle(destination.label, null)
         }
     }
 

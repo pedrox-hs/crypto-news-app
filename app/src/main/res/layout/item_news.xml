@@ -13,9 +13,20 @@
         android:layout_height="80dp"
         android:layout_marginTop="6dp"
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvNewsSource"
-        tools:src="@drawable/ic_robot_error" />
+        tools:src="@drawable/placeholder_article_image" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/imageForeground"
+        app:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/ivNewsImage"
+        app:layout_constraintEnd_toEndOf="@id/ivNewsImage"
+        app:layout_constraintStart_toStartOf="@id/ivNewsImage"
+        app:layout_constraintTop_toTopOf="@id/ivNewsImage" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvNewsSource"

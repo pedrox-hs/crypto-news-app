@@ -9,7 +9,8 @@ import java.util.*
 data class Article(
     val title: String,
     val description: String,
-    val content: String,
+    @SerializedName("content")
+    private val contentText: String?,
     @SerializedName("urlToImage")
     val imageUrl: String?,
     val publishedAt: Date,
@@ -19,9 +20,8 @@ data class Article(
     val url: String
 ) : Parcelable {
     val author: String
-        get() = when {
-            authorText == null -> source.name
-            source.name != "Forbes.com" -> authorText
-            else -> authorText.replace("^(.+?), Contributor.+$".toRegex(), "$1")
-        }
+        get() = authorText ?: source.name
+
+    val content: String
+        get() = contentText?.replace("\\[.[0-9]+ chars\\]$".toRegex(), "") ?: description
 }

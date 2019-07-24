@@ -39,6 +39,7 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
         newsViewModel.setup()
         setupList()
     }
