@@ -4,20 +4,16 @@ import android.view.View
 import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
 import com.pedrenrique.cryptonews.core.ext.*
-import com.pedrenrique.cryptonews.features.common.adapter.Adapter
+import com.pedrenrique.cryptonews.features.common.adapter.RecyclerViewAdapter
 import com.pedrenrique.cryptonews.features.common.adapter.BaseViewHolder
 import com.pedrenrique.cryptonews.features.common.adapter.ViewParams
 import kotlinx.android.synthetic.main.item_error.view.*
 import kotlinx.android.synthetic.main.item_news.view.*
 import java.util.*
 
-class NewsAdapter : Adapter<ViewParams>() {
+class NewsAdapter : RecyclerViewAdapter<ViewParams>() {
 
     private var onItemClickListener: OnItemClickListener? = null
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.onItemClickListener = listener
-    }
 
     @Suppress("UNCHECKED_CAST")
     override fun getViewHolderForLayout(layout: Int, view: View) =
@@ -29,14 +25,26 @@ class NewsAdapter : Adapter<ViewParams>() {
         }
 
     override fun getLayoutForPosition(position: Int) =
-        items[position].layoutRes
+        getItemForPosition(position).layoutRes
 
+    // region Listeners
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.onItemClickListener = listener
+    }
+
+    interface OnItemClickListener {
+        fun onArticleClick(article: Article)
+        fun onRetryClick()
+    }
+    // endregion
+
+    // region ViewHolders
     inner class NewsViewHolder(view: View) : BaseViewHolder<NewsViewParams>(view) {
         private val now = Calendar.getInstance()
 
         override fun bind(data: NewsViewParams) {
             itemView.setOnClickListener {
-                onItemClickListener?.onClick(data.item)
+                onItemClickListener?.onArticleClick(data.item)
             }
             itemView.populate(data.item)
         }
@@ -72,9 +80,5 @@ class NewsAdapter : Adapter<ViewParams>() {
             // nothing
         }
     }
-
-    interface OnItemClickListener {
-        fun onClick(article: Article)
-        fun onRetryClick()
-    }
+    // endregion
 }

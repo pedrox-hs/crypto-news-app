@@ -9,23 +9,31 @@ import androidx.annotation.MainThread
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class Adapter<T> : RecyclerView.Adapter<BaseViewHolder<T>>() {
+abstract class RecyclerViewAdapter<T> : RecyclerView.Adapter<BaseViewHolder<T>>() {
 
+    private var dataVersion = 0
     var items: List<T> = emptyList()
         private set
 
-    private var dataVersion = 0
+    // region Can be override
+    abstract fun getViewHolderForLayout(layout: Int, view: View): BaseViewHolder<*>
 
+    abstract fun getLayoutForPosition(position: Int): Int
+
+    open fun areItemsTheSame(oldItem: T?, newItem: T?) =
+        oldItem == newItem
+
+    open fun areContentsTheSame(oldItem: T?, newItem: T?) =
+        oldItem == newItem
+    // endregion
+
+    // region RecyclerView.Adapter overrides
     @Suppress("UNCHECKED_CAST")
     override fun onCreateViewHolder(parent: ViewGroup, layout: Int): BaseViewHolder<T> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(layout, parent, false)
         return getViewHolderForLayout(layout, view) as BaseViewHolder<T>
     }
-
-    abstract fun getViewHolderForLayout(layout: Int, view: View): BaseViewHolder<*>
-
-    abstract fun getLayoutForPosition(position: Int): Int
 
     override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int) {
         holder.bind(getItemForPosition(position))
@@ -36,6 +44,7 @@ abstract class Adapter<T> : RecyclerView.Adapter<BaseViewHolder<T>>() {
 
     override fun getItemCount() =
         items.size
+    // endregion
 
     @MainThread
     fun replace(update: List<T>) {
@@ -55,14 +64,8 @@ abstract class Adapter<T> : RecyclerView.Adapter<BaseViewHolder<T>>() {
         }
     }
 
-    private fun getItemForPosition(position: Int) =
+    fun getItemForPosition(position: Int) =
         items[position]
-
-    open fun areItemsTheSame(oldItem: T?, newItem: T?) =
-        oldItem == newItem
-
-    open fun areContentsTheSame(oldItem: T?, newItem: T?) =
-        oldItem == newItem
 
     @SuppressLint("StaticFieldLeak")
     inner class Task(
@@ -78,13 +81,13 @@ abstract class Adapter<T> : RecyclerView.Adapter<BaseViewHolder<T>>() {
                 override fun getNewListSize() = newItems.size
 
                 override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-                    this@Adapter.areItemsTheSame(
+                    this@RecyclerViewAdapter.areItemsTheSame(
                         oldItems[oldItemPosition],
                         newItems[newItemPosition]
                     )
 
                 override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-                    this@Adapter.areContentsTheSame(
+                    this@RecyclerViewAdapter.areContentsTheSame(
                         oldItems[oldItemPosition],
                         newItems[newItemPosition]
                     )
@@ -93,7 +96,7 @@ abstract class Adapter<T> : RecyclerView.Adapter<BaseViewHolder<T>>() {
         override fun onPostExecute(result: DiffUtil.DiffResult) {
             if (startVersion == dataVersion) {
                 items = newItems
-                result.dispatchUpdatesTo(this@Adapter)
+                result.dispatchUpdatesTo(this@RecyclerViewAdapter)
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedrenrique.cryptonews.core.data.Article
 import com.pedrenrique.cryptonews.core.data.PaginatedData
+import com.pedrenrique.cryptonews.core.data.SortType
 import com.pedrenrique.cryptonews.core.domain.ListArticles
 import com.pedrenrique.cryptonews.core.domain.LoadMoreArticles
 import com.pedrenrique.cryptonews.core.exceptions.EmptyResultException
@@ -17,23 +18,23 @@ class NewsViewModel(
         private val loadMoreArticles: LoadMoreArticles
 ) : ViewModel() {
 
+    // region ViewModel fields
     private var page = 0
+
     val state = MutableLiveData<NewsListState>()
 
+    var sortType = SortType.PUBLISHED_AT
+        private set
+    // endregion
+
+    // region Load data
     fun load() {
         val value = state.value
         if (value == null || value is NewsListState.Failed) {
             state.value = NewsListState.Requesting
             retrieveData {
-                listArticles()
+                listArticles(ListArticles.Params(sortType))
             }
-        }
-    }
-
-    fun refresh() {
-        state.value = NewsListState.Requesting
-        retrieveData {
-            listArticles()
         }
     }
 
@@ -43,11 +44,36 @@ class NewsViewModel(
         if (data != null) {
             state.value = NewsListState.RequestingNext(data)
             retrieveData(data) {
-                loadMoreArticles(LoadMoreArticles.Params(page))
+                loadMoreArticles(LoadMoreArticles.Params(page, sortType))
             }
         }
     }
 
+    fun refresh() {
+        state.value = NewsListState.Requesting
+        retrieveData {
+            listArticles(ListArticles.Params(sortType))
+        }
+    }
+    // endregion
+
+    // region Request sorted data
+    fun sortByPublishDate() {
+        if (sortType != SortType.PUBLISHED_AT) {
+            sortType = SortType.PUBLISHED_AT
+            refresh()
+        }
+    }
+
+    fun sortByPopularity() {
+        if (sortType != SortType.POPULARITY) {
+            sortType = SortType.POPULARITY
+            refresh()
+        }
+    }
+    // endregion
+
+    // region Requesting data
     private fun retrieveData(
             lastData: List<ViewParams>? = null,
             provider: suspend () -> PaginatedData<Article>
@@ -77,5 +103,6 @@ class NewsViewModel(
         page = result.page
         return NewsListState.Loaded(data.toList())
     }
+    // endregion
 
 }

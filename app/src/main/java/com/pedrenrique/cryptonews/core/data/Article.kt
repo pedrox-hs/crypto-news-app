@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+typealias Image = String
+
 @Parcelize
 data class Article(
     val title: String,
@@ -12,7 +14,7 @@ data class Article(
     @SerializedName("content")
     private val contentText: String?,
     @SerializedName("urlToImage")
-    val imageUrl: String?,
+    val imageUrl: Image?,
     val publishedAt: Date,
     @SerializedName("author")
     private val authorText: String?,

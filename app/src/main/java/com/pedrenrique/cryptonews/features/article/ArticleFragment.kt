@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
+import com.pedrenrique.cryptonews.core.data.Image
 import com.pedrenrique.cryptonews.core.ext.*
 import kotlinx.android.synthetic.main.fragment_article.*
 import java.util.*
@@ -44,27 +45,29 @@ class ArticleFragment : Fragment() {
         tvArticleContent.text = content
         tvArticleAuthor.text = getString(R.string.text_author, author)
         tvArticlePublishedAt.text = publishedAt.formatElapsedDays(context!!, Calendar.getInstance())
-        if (imageUrl != null) {
-            ivArticleImage.setRemoteImage(imageUrl) {
-                placeholder(R.drawable.placeholder_article_image)
-                error(R.drawable.placeholder_article_image_error)
-            }
-            ivArticleImage.show()
-        } else {
-            ivArticleImage.gone()
+        imageUrl?.load() ?: ivArticleImage.gone()
+    }
+
+    private fun Image.load() {
+        ivArticleImage.setRemoteImage(this) {
+            placeholder(R.drawable.placeholder_article_image)
+            error(R.drawable.placeholder_article_image_error)
         }
+        ivArticleImage.show()
     }
 
     private fun bindEvents() {
-        btnReadMore.setOnClickListener {
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(args.article.url)
-            val packageManager = activity!!.packageManager
-            if (i.resolveActivity(packageManager) != null) {
-                startActivity(i)
-            } else {
-                Toast.makeText(context, R.string.msg_cant_open_article, Toast.LENGTH_LONG).show()
-            }
+        btnReadMore.setOnClickListener(::onReadMoreClick)
+    }
+
+    private fun onReadMoreClick(view: View) {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(args.article.url)
+        val packageManager = activity!!.packageManager
+        if (i.resolveActivity(packageManager) != null) {
+            startActivity(i)
+        } else {
+            Toast.makeText(context, R.string.msg_cant_open_article, Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -1,9 +1,7 @@
 package com.pedrenrique.cryptonews.features.news
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -14,21 +12,32 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
+import com.pedrenrique.cryptonews.core.data.SortType
 import com.pedrenrique.cryptonews.core.ext.*
-import com.pedrenrique.cryptonews.features.common.adapter.Adapter
+import com.pedrenrique.cryptonews.core.widget.RadioOptionsDialog
+import com.pedrenrique.cryptonews.features.common.adapter.RecyclerViewAdapter
 import com.pedrenrique.cryptonews.features.common.adapter.ViewParams
-import com.pedrenrique.githubapp.features.common.listeners.EndlessRecyclerViewScrollListener
+import com.pedrenrique.cryptonews.features.common.listeners.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.layout_error_state.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener {
+class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
+    RadioOptionsDialog.OnSelectedItemListener {
 
+    // region Class fields
     private val newsViewModel by viewModel<NewsViewModel>()
     private val adapter = NewsAdapter()
 
     private val RecyclerView.linearLayoutManager: LinearLayoutManager
         get() = layoutManager as LinearLayoutManager
+    // endregion
+
+    // region Platform overrides
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,27 +53,75 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener {
         setupList()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_sort) {
+            onSortOptionClick()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+    // endregion
+
+    // region Setup
     private fun NewsViewModel.setup() {
         state.observe(this@NewsFragment, Observer {
-            adapter.replace(it?.data ?: listOf())
-            when (it) {
-                is NewsListState.Requesting -> {
-                    swipe.isRefreshing = true
-                    layoutError.gone()
-                }
-                is NewsListState.Failed -> onLoadArticlesFailed(it.error)
-                is NewsListState.NextFailed -> {
-                    swipe.isRefreshing = false
-                    Toast.makeText(context, it.error.defaultFriendlyTitle, Toast.LENGTH_LONG).show()
-                }
-                else -> {
-                    swipe.isRefreshing = false
-                    rvNews.show()
-                    layoutError.gone()
-                }
-            }
+            onNewsListChanged(it)
         })
         load()
+    }
+
+    private fun RecyclerView.setup(adapter: RecyclerViewAdapter<ViewParams>, loadMore: () -> Unit) {
+        layoutManager = LinearLayoutManager(context)
+        val endlessScrollListener = EndlessRecyclerViewScrollListener(linearLayoutManager, loadMore)
+
+        val decoration = DividerItemDecoration(context, linearLayoutManager.orientation)
+        decoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider)!!)
+        addItemDecoration(decoration)
+
+        this.adapter = adapter
+        setHasFixedSize(true)
+        addOnScrollListener(endlessScrollListener)
+    }
+
+    private fun setupList() {
+        adapter.setOnItemClickListener(this)
+        rvNews.setup(adapter, newsViewModel::loadMore)
+        swipe.setOnRefreshListener(newsViewModel::refresh)
+        btnTryAgain.setOnClickListener { newsViewModel.load() }
+    }
+    // endregion
+
+    // region Listeners
+
+    // region Data change handlers
+    private fun onNewsListChanged(it: NewsListState?) {
+        adapter.replace(it?.data ?: listOf())
+        when (it) {
+            is NewsListState.Requesting -> onRequestingNews()
+            is NewsListState.Failed -> onLoadArticlesFailed(it.error)
+            is NewsListState.NextFailed -> onLoadNextFailed(it.error)
+            else -> onLoadDone()
+        }
+    }
+
+    private fun onRequestingNews() {
+        swipe.isRefreshing = true
+        layoutError.gone()
+    }
+
+    private fun onLoadDone() {
+        swipe.isRefreshing = false
+        rvNews.show()
+        layoutError.gone()
+    }
+
+    private fun onLoadNextFailed(error: Throwable) {
+        swipe.isRefreshing = false
+        Toast.makeText(context, error.defaultFriendlyTitle, Toast.LENGTH_LONG).show()
     }
 
     private fun onLoadArticlesFailed(error: Throwable) {
@@ -75,36 +132,25 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener {
         tvErrorTitle.setText(error.defaultFriendlyTitle)
         tvErrorMessage.setText(error.defaultFriendlyMsg)
     }
+    // endregion
 
-    private fun setupList() {
-        adapter.setOnItemClickListener(this)
-        rvNews.setup(adapter) {
-            newsViewModel.loadMore()
-        }
-        swipe.setOnRefreshListener {
-            newsViewModel.refresh()
-        }
-        btnTryAgain.setOnClickListener {newsViewModel.load() }
+    // region User event handlers
+    private fun onSortOptionClick() {
+        RadioOptionsDialog.create {
+            selected = newsViewModel.sortType.ordinal
+            items = SortType.values().map { getString(it.displayValue) }
+            target = this@NewsFragment
+        }.show(supportActivity?.navFragmentManager!!)
     }
 
-    private fun RecyclerView.setup(adapter: Adapter<ViewParams>, loadMore: () -> Unit) {
-        layoutManager = LinearLayoutManager(context)
-        val endlessRecyclerViewScrollListener =
-            EndlessRecyclerViewScrollListener(
-                linearLayoutManager,
-                loadMore
-            )
-
-        val decoration = DividerItemDecoration(context, linearLayoutManager.orientation)
-        decoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider)!!)
-        addItemDecoration(decoration)
-
-        this.adapter = adapter
-        setHasFixedSize(true)
-        addOnScrollListener(endlessRecyclerViewScrollListener)
+    override fun onSelectedOption(which: Int) {
+        when (SortType.values()[which]) {
+            SortType.PUBLISHED_AT -> newsViewModel.sortByPublishDate()
+            SortType.POPULARITY -> newsViewModel.sortByPopularity()
+        }
     }
 
-    override fun onClick(article: Article) {
+    override fun onArticleClick(article: Article) {
         val act = activity ?: return
         val navController = Navigation.findNavController(act, R.id.navHostFragment)
         val showArticle = NewsFragmentDirections.showArticle(article)
@@ -114,4 +160,7 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener {
     override fun onRetryClick() {
         newsViewModel.loadMore()
     }
+    // endregion
+
+    // endregion
 }
