@@ -3,9 +3,13 @@ package com.pedrenrique.cryptonews.features.news
 import android.view.View
 import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
-import com.pedrenrique.cryptonews.core.ext.*
-import com.pedrenrique.cryptonews.features.common.adapter.RecyclerViewAdapter
+import com.pedrenrique.cryptonews.core.data.Image
+import com.pedrenrique.cryptonews.core.ext.formatElapsedDays
+import com.pedrenrique.cryptonews.core.ext.gone
+import com.pedrenrique.cryptonews.core.ext.setRemoteImage
+import com.pedrenrique.cryptonews.core.ext.show
 import com.pedrenrique.cryptonews.features.common.adapter.BaseViewHolder
+import com.pedrenrique.cryptonews.features.common.adapter.RecyclerViewAdapter
 import com.pedrenrique.cryptonews.features.common.adapter.ViewParams
 import com.pedrenrique.cryptonews.features.common.viewmodels.news.ErrorViewParams
 import com.pedrenrique.cryptonews.features.common.viewmodels.news.LoadingViewParams
@@ -58,15 +62,15 @@ class NewsAdapter : RecyclerViewAdapter<ViewParams>() {
             tvNewsSource.text = article.source.name
             tvNewsAuthor.text = article.author
             tvNewsPublishedAt.text = article.publishedAt.formatElapsedDays(context, now)
-            if (article.imageUrl != null) {
-                ivNewsImage.setRemoteImage(article.imageUrl) {
-                    placeholder(R.drawable.placeholder_article_image)
-                    error(R.drawable.placeholder_article_image_error)
-                }
-                ivNewsImage.show()
-            } else {
-                ivNewsImage.gone()
+            article.imageUrl?.load() ?: ivNewsImage.gone()
+        }
+
+        private fun Image.load() {
+            itemView.ivNewsImage.setRemoteImage(this) {
+                placeholder(R.drawable.placeholder_article_image)
+                error(R.drawable.placeholder_article_image_error)
             }
+            itemView.ivNewsImage.show()
         }
     }
 
@@ -78,10 +82,6 @@ class NewsAdapter : RecyclerViewAdapter<ViewParams>() {
         }
     }
 
-    class LoadingViewHolder(view: View) : BaseViewHolder<LoadingViewParams>(view) {
-        override fun bind(data: LoadingViewParams) {
-            // nothing
-        }
-    }
+    class LoadingViewHolder(view: View) : BaseViewHolder.Generic<LoadingViewParams>(view)
     // endregion
 }
