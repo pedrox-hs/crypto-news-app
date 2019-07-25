@@ -21,6 +21,7 @@ class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
     companion object {
         private val TAG: String = RadioOptionsDialog::class.java.name
 
+        const val EXTRA_TITLE = "EXTRA_TITLE"
         const val EXTRA_SELECTED = "EXTRA_SELECTED"
         const val EXTRA_ITEMS = "EXTRA_ITEMS"
         const val EXTRA_REQUEST_CODE = "EXTRA_REQUEST_CODE"
@@ -32,6 +33,9 @@ class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
         fun get(fragmentManager: FragmentManager): DialogFragment? =
             fragmentManager.findFragmentByTag(TAG) as? DialogFragment
     }
+
+    private val dialogTitle: String?
+        get() = arguments?.getString(EXTRA_TITLE)
 
     private val adapterItems: ArrayList<String>
         get() = arguments?.getStringArrayList(EXTRA_ITEMS) ?: arrayListOf()
@@ -56,7 +60,7 @@ class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         AlertDialog.Builder(context!!)
-            .setTitle(R.string.menu_sort_by)
+            .setTitle(dialogTitle)
             .setAdapter(adapter, null)
             .setPositiveButton(android.R.string.ok, this)
             .setNegativeButton(android.R.string.cancel, this)
@@ -104,6 +108,7 @@ class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
     }
 
     class Builder {
+        var title: String? = null
         var selected: Int = 0
         var items: Collection<String> = listOf()
 
@@ -114,6 +119,7 @@ class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
         fun build() =
             RadioOptionsDialog().apply {
                 arguments = Bundle().apply {
+                    putString(EXTRA_TITLE, title)
                     putInt(EXTRA_SELECTED, selected)
                     putStringArrayList(EXTRA_ITEMS, ArrayList(items))
                     putInt(EXTRA_REQUEST_CODE, this@Builder.requestCode)

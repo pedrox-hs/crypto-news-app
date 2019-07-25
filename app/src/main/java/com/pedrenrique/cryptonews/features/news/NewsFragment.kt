@@ -161,6 +161,7 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
     // region User event handlers
     private fun onSortOptionClick() {
         RadioOptionsDialog.create {
+            title = getString(R.string.menu_sort_by)
             requestCode = REQUEST_CODE_CHANGE_SORT
             selected = newsViewModel.actualSortingMode
             items = newsViewModel.availableSortingOptions.map { getString(it.displayValue) }
@@ -174,6 +175,7 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
 
     private fun onLanguageOptionClick() {
         RadioOptionsDialog.create {
+            title = getString(R.string.menu_change_language)
             requestCode = REQUEST_CODE_CHANGE_LANGUAGE
             items = languageViewModel.availableLanguageOptions.map { getString(it.displayText) }
             selected = languageViewModel.actualLanguage
