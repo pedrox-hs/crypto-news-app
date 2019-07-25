@@ -15,12 +15,11 @@ class AppLanguageViewModel(private val localeManager: LocaleManager) : ViewModel
             if (value != field && value >= 0 && value < availableLanguageOptions.size) {
                 field = value
                 localeManager.setLanguage(language)
-                state.value =
-                    State.RefreshNeeded
+                state.value = State.RefreshNeeded
             }
         }
 
-    private var language: Language
+    var language: Language
         get() = availableLanguageOptions[actualLanguage]
         set(value) {
             actualLanguage = value.ordinal
@@ -33,8 +32,7 @@ class AppLanguageViewModel(private val localeManager: LocaleManager) : ViewModel
     }
 
     fun setRefreshDone() {
-        state.value =
-            State.Done
+        state.value = State.Done
     }
 
     sealed class State {
