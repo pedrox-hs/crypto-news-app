@@ -30,7 +30,18 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tvAttribution"
         app:layout_constraintTop_toBottomOf="@id/appBar"
         app:navGraph="@navigation/nav_graph" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAttribution"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:text="@string/text_attribution"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

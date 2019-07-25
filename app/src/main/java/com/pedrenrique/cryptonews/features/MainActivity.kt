@@ -2,6 +2,7 @@ package com.pedrenrique.cryptonews.features
 
 import android.content.Context
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             supportActionBar?.setTitle(destination.label, null)
         }
+        tvAttribution.movementMethod = LinkMovementMethod.getInstance()
     }
 
     override fun attachBaseContext(base: Context) {
