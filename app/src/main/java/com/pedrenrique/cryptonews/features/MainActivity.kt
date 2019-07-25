@@ -11,6 +11,7 @@ import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.ext.setTitle
 import com.pedrenrique.cryptonews.core.platform.LocaleManager
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     val navFragmentManager: FragmentManager
         get() = navHost.childFragmentManager
+
+    private val localeManager by inject<LocaleManager>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(LocaleManager.restoreLanguage(base))
+        super.attachBaseContext(localeManager.restoreLanguage())
     }
 
     override fun onOptionsItemSelected(item: MenuItem?) =

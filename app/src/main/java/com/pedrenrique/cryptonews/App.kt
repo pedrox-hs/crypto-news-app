@@ -8,18 +8,21 @@ import com.pedrenrique.cryptonews.core.platform.LocaleManager
 
 
 open class App : Application() {
+    lateinit var localeManager: LocaleManager
+
     override fun onCreate() {
         super.onCreate()
         setUp()
     }
 
     override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(LocaleManager.restoreLanguage(base))
+        localeManager = LocaleManager(base)
+        super.attachBaseContext(localeManager.restoreLanguage())
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        LocaleManager.restoreLanguage(this)
+        localeManager.restoreLanguage()
     }
 
     open fun setUp() {

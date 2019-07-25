@@ -25,7 +25,7 @@ class NewsViewModel(
 
     var actualSortingMode = SortingMode.PUBLISHED_AT.ordinal
         set(value) {
-            if (value != field && value > 0 && value < availableSortingOptions.size) {
+            if (value != field && value >= 0 && value < availableSortingOptions.size) {
                 field = value
                 refresh()
             }

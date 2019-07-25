@@ -20,7 +20,7 @@ fun Date.formatElapsedDays(context: Context, to: Calendar) =
                 Calendar.SHORT,
                 Locale.getDefault()
             ),
-            asCalendar().get(Calendar.DAY_OF_MONTH)
+            asCalendar().get(Calendar.DAY_OF_MONTH).toString()
         )
     }
 

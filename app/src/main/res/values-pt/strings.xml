@@ -30,7 +30,7 @@
     <string name="text_elapsed_today">Hoje</string>
     <string name="text_yesterday">Ontem</string>
     <string name="text_few_days">há %d dias</string>
-    <string name="text_many_days">%2$s %1$d</string>
+    <string name="text_many_days">%2$s %1$s</string>
 
     <string name="sort_by_publish_date">Data de publicação</string>
     <string name="sort_by_popularity">Popularidade</string>

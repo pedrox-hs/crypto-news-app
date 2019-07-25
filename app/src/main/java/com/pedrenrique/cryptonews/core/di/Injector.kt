@@ -26,6 +26,7 @@ fun Application.setUpDI() {
 
         modules(
             listOf(
+                appModule,
                 netModule,
                 newsModule
             )

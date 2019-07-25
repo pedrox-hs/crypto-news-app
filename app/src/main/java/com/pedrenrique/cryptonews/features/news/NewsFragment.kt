@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
 import com.pedrenrique.cryptonews.core.ext.*
+import com.pedrenrique.cryptonews.core.platform.AppLanguageViewModel
 import com.pedrenrique.cryptonews.core.platform.Language
 import com.pedrenrique.cryptonews.core.platform.LocaleManager
 import com.pedrenrique.cryptonews.core.platform.widget.RadioOptionsDialog
@@ -28,6 +29,8 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
 
     // region Class fields
     private val newsViewModel by viewModel<NewsViewModel>()
+    private val languageViewModel by viewModel<AppLanguageViewModel>()
+
     private val adapter = NewsAdapter()
 
     private val RecyclerView.linearLayoutManager: LinearLayoutManager
@@ -55,7 +58,10 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        languageViewModel.setup()
         newsViewModel.setup()
+
         setupList()
     }
 
@@ -83,6 +89,12 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
             onNewsListChanged(it)
         })
         load()
+    }
+
+    private fun AppLanguageViewModel.setup() {
+        state.observe(this@NewsFragment, Observer {
+            onLanguageChanged(it)
+        })
     }
 
     private fun RecyclerView.setup(adapter: RecyclerViewAdapter<ViewParams>, loadMore: () -> Unit) {
@@ -163,17 +175,20 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
     private fun onLanguageOptionClick() {
         RadioOptionsDialog.create {
             requestCode = REQUEST_CODE_CHANGE_LANGUAGE
-            items = Language.values().map { getString(it.displayText) }
-            selected = LocaleManager.getLanguage(context!!).ordinal
+            items = languageViewModel.availableLanguageOptions.map { getString(it.displayText) }
+            selected = languageViewModel.actualLanguage
             target = this@NewsFragment
         }.show(supportActivity?.navFragmentManager!!)
     }
 
-    private fun onChangeLanguage(which: Int) {
-        val language = Language.values()[which]
-        if (language != LocaleManager.getLanguage(context!!)) {
-            LocaleManager.setLanguage(context!!, language)
+    private fun onLanguageSelected(which: Int) {
+        languageViewModel.setNewLanguage(which)
+    }
+
+    private fun onLanguageChanged(state: AppLanguageViewModel.State) {
+        if (state == AppLanguageViewModel.State.RefreshNeeded) {
             newsViewModel.refresh()
+            languageViewModel.setRefreshDone()
             supportActivity?.recreate()
         }
     }
@@ -192,7 +207,7 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
     override fun onSelectedOption(requestCode: Int, which: Int) {
         when (requestCode) {
             REQUEST_CODE_CHANGE_SORT -> onChangeNewsSort(which)
-            REQUEST_CODE_CHANGE_LANGUAGE -> onChangeLanguage(which)
+            REQUEST_CODE_CHANGE_LANGUAGE -> onLanguageSelected(which)
         }
     }
     // endregion

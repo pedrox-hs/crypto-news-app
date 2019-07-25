@@ -8,46 +8,48 @@ import androidx.annotation.StringRes
 import com.pedrenrique.cryptonews.R
 import java.util.*
 
-object LocaleManager {
-    private const val PREF_LANGUAGE = "pref_language"
-
-    fun restoreLanguage(context: Context) =
-        updateResources(context, getLanguage(context))
-
-    fun setLanguage(context: Context, language: Language): Context {
-        persistLanguage(context, language)
-        return updateResources(context, language)
+class LocaleManager(val context: Context) {
+    companion object {
+        private const val PREF_LANGUAGE = "pref_language"
     }
 
-    fun getLanguage(context: Context): Language {
+    fun restoreLanguage() =
+        updateResources(getLanguage())
+
+    fun setLanguage(language: Language): Context {
+        persistLanguage(language)
+        return updateResources(language)
+    }
+
+    fun getLanguage(): Language {
         val pref = PreferenceManager.getDefaultSharedPreferences(context)
         val savedLanguage = pref.getString(PREF_LANGUAGE, null)
         return Language.getByCodeOrDefault(savedLanguage)
     }
 
-    private fun persistLanguage(context: Context, language: Language) {
+    private fun persistLanguage(language: Language) {
         val pref = PreferenceManager.getDefaultSharedPreferences(context)
         pref.edit().putString(PREF_LANGUAGE, language.code).apply()
     }
 
-    private fun updateResources(context: Context, language: Language): Context {
+    private fun updateResources(language: Language): Context {
         val locale = Locale(language.code)
         Locale.setDefault(locale)
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            updateResourcesLocale(context, locale)
-        } else updateResourcesLocaleLegacy(context, locale)
+            updateResourcesLocale(locale)
+        } else updateResourcesLocaleLegacy(locale)
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    private fun updateResourcesLocale(context: Context, locale: Locale): Context {
+    private fun updateResourcesLocale(locale: Locale): Context {
         val configuration = context.resources.configuration
         configuration.setLocale(locale)
         return context.createConfigurationContext(configuration)
     }
 
     @Suppress("DEPRECATION")
-    private fun updateResourcesLocaleLegacy(context: Context, locale: Locale): Context {
+    private fun updateResourcesLocaleLegacy(locale: Locale): Context {
         val resources = context.resources
         val configuration = resources.configuration
         configuration.locale = locale

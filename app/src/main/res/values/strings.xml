@@ -32,7 +32,7 @@
     <string name="text_elapsed_today">Today</string>
     <string name="text_yesterday">Yesterday</string>
     <string name="text_few_days">%d days ago</string>
-    <string name="text_many_days">%1$s %2$d</string>
+    <string name="text_many_days">%1$s %2$s</string>
 
     <string name="sort_by_publish_date">Publish date</string>
     <string name="sort_by_popularity">Popularity</string>
