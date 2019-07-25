@@ -1,4 +1,4 @@
-package com.pedrenrique.cryptonews.features.news
+package com.pedrenrique.cryptonews.features.common.viewmodels.news
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -44,7 +44,8 @@ class NewsViewModel(
     fun load() {
         val value = state.value
         if (value == null || value is NewsListState.Failed) {
-            state.value = NewsListState.Requesting
+            state.value =
+                NewsListState.Requesting
             retrieveData {
                 listArticles(ListArticles.Params(sortingMode))
             }
@@ -55,7 +56,10 @@ class NewsViewModel(
         val value = state.value
         val data = (value as? NewsListState.Loaded)?.data ?: (value as? NewsListState.NextFailed)?.lastData
         if (data != null) {
-            state.value = NewsListState.RequestingNext(data)
+            state.value =
+                NewsListState.RequestingNext(
+                    data
+                )
             retrieveData(data) {
                 loadMoreArticles(LoadMoreArticles.Params(page, sortingMode))
             }
@@ -63,7 +67,8 @@ class NewsViewModel(
     }
 
     fun refresh() {
-        state.value = NewsListState.Requesting
+        state.value =
+            NewsListState.Requesting
         retrieveData {
             listArticles(ListArticles.Params(sortingMode))
         }
@@ -87,10 +92,19 @@ class NewsViewModel(
             } catch (e: EmptyResultException) {
                 NewsListState.Empty
             } catch (e: NoMoreResultException) {
-                NewsListState.Completed(lastData ?: listOf())
+                NewsListState.Completed(
+                    lastData ?: listOf()
+                )
             } catch (e: Throwable) {
-                lastData?.let { NewsListState.NextFailed(e, it) }
-                        ?: NewsListState.Failed(e)
+                lastData?.let {
+                    NewsListState.NextFailed(
+                        e,
+                        it
+                    )
+                }
+                        ?: NewsListState.Failed(
+                            e
+                        )
             }
         }
     }

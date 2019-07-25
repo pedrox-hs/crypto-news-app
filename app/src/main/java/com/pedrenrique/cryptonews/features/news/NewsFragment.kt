@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
 import com.pedrenrique.cryptonews.core.ext.*
-import com.pedrenrique.cryptonews.core.platform.AppLanguageViewModel
-import com.pedrenrique.cryptonews.core.platform.Language
-import com.pedrenrique.cryptonews.core.platform.LocaleManager
+import com.pedrenrique.cryptonews.features.common.viewmodels.AppLanguageViewModel
 import com.pedrenrique.cryptonews.core.platform.widget.RadioOptionsDialog
 import com.pedrenrique.cryptonews.features.common.adapter.RecyclerViewAdapter
 import com.pedrenrique.cryptonews.features.common.adapter.ViewParams
 import com.pedrenrique.cryptonews.features.common.listeners.EndlessRecyclerViewScrollListener
+import com.pedrenrique.cryptonews.features.common.viewmodels.news.NewsListState
+import com.pedrenrique.cryptonews.features.common.viewmodels.news.NewsViewModel
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.layout_error_state.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

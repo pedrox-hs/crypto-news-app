@@ -2,7 +2,7 @@ package com.pedrenrique.cryptonews.core.di
 
 import android.content.Context
 import com.pedrenrique.cryptonews.App
-import com.pedrenrique.cryptonews.core.platform.AppLanguageViewModel
+import com.pedrenrique.cryptonews.features.common.viewmodels.AppLanguageViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

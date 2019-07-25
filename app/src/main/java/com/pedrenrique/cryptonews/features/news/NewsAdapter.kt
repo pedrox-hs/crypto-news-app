@@ -7,6 +7,9 @@ import com.pedrenrique.cryptonews.core.ext.*
 import com.pedrenrique.cryptonews.features.common.adapter.RecyclerViewAdapter
 import com.pedrenrique.cryptonews.features.common.adapter.BaseViewHolder
 import com.pedrenrique.cryptonews.features.common.adapter.ViewParams
+import com.pedrenrique.cryptonews.features.common.viewmodels.news.ErrorViewParams
+import com.pedrenrique.cryptonews.features.common.viewmodels.news.LoadingViewParams
+import com.pedrenrique.cryptonews.features.common.viewmodels.news.NewsViewParams
 import kotlinx.android.synthetic.main.item_error.view.*
 import kotlinx.android.synthetic.main.item_news.view.*
 import java.util.*

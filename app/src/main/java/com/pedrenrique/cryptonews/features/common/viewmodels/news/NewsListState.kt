@@ -1,4 +1,4 @@
-package com.pedrenrique.cryptonews.features.news
+package com.pedrenrique.cryptonews.features.common.viewmodels.news
 
 import com.pedrenrique.cryptonews.core.ext.append
 import com.pedrenrique.cryptonews.features.common.adapter.ViewParams
@@ -45,7 +45,11 @@ sealed class NewsListState(val data: List<ViewParams>) {
     data class NextFailed(
         val error: Throwable,
         val lastData: List<ViewParams>
-    ) : NewsListState(lastData.append(ErrorViewParams(error)))
+    ) : NewsListState(lastData.append(
+        ErrorViewParams(
+            error
+        )
+    ))
 
     /**
      * Class state to indicate when data is loaded successfully

@@ -1,7 +1,9 @@
-package com.pedrenrique.cryptonews.core.platform
+package com.pedrenrique.cryptonews.features.common.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pedrenrique.cryptonews.core.platform.Language
+import com.pedrenrique.cryptonews.core.platform.LocaleManager
 
 class AppLanguageViewModel(private val localeManager: LocaleManager) : ViewModel() {
     val state = MutableLiveData<State>(
@@ -13,7 +15,8 @@ class AppLanguageViewModel(private val localeManager: LocaleManager) : ViewModel
             if (value != field && value >= 0 && value < availableLanguageOptions.size) {
                 field = value
                 localeManager.setLanguage(language)
-                state.value = State.RefreshNeeded
+                state.value =
+                    State.RefreshNeeded
             }
         }
 
@@ -30,7 +33,8 @@ class AppLanguageViewModel(private val localeManager: LocaleManager) : ViewModel
     }
 
     fun setRefreshDone() {
-        state.value = State.Done
+        state.value =
+            State.Done
     }
 
     sealed class State {

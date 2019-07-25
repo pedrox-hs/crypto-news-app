@@ -1,4 +1,4 @@
-package com.pedrenrique.cryptonews.features.news
+package com.pedrenrique.cryptonews.features.common.viewmodels.news
 
 import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
