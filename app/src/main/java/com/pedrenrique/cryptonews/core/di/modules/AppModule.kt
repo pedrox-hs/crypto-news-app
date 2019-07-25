@@ -1,4 +1,4 @@
-package com.pedrenrique.cryptonews.core.di
+package com.pedrenrique.cryptonews.core.di.modules
 
 import android.content.Context
 import com.pedrenrique.cryptonews.App

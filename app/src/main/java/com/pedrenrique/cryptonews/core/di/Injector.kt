@@ -2,6 +2,7 @@ package com.pedrenrique.cryptonews.core.di
 
 import android.app.Application
 import com.pedrenrique.cryptonews.BuildConfig
+import com.pedrenrique.cryptonews.core.di.modules.appModule
 import com.pedrenrique.cryptonews.core.di.modules.netModule
 import com.pedrenrique.cryptonews.core.di.modules.newsModule
 import org.koin.android.ext.koin.androidContext

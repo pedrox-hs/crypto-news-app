@@ -11,7 +11,8 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        testInstrumentationRunner 'com.pedrenrique.cryptonews.runner.MockTestRunner'
 
         vectorDrawables.useSupportLibrary = true
         buildConfigField "String", "API_BASE_URL", "\"https://newsapi.org/v2/\""
@@ -66,11 +67,13 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
 
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+
     androidTestImplementation "org.mockito:mockito-android:2.28.2"
     androidTestImplementation "androidx.test.ext:junit:$android_test_version"
     androidTestImplementation "androidx.test:runner:$android_test_version"
     androidTestImplementation "androidx.test:rules:$android_test_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:$okHttp_version"
 }

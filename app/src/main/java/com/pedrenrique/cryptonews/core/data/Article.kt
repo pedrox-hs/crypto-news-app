@@ -12,18 +12,18 @@ data class Article(
     val title: String,
     val description: String,
     @SerializedName("content")
-    private val contentText: String?,
+    val originalContent: String?,
     @SerializedName("urlToImage")
     val imageUrl: Image?,
     val publishedAt: Date,
     @SerializedName("author")
-    private val authorText: String?,
+    val originalAuthor: String?,
     val source: Source,
     val url: String
 ) : Parcelable {
     val author: String
-        get() = authorText ?: source.name
+        get() = originalAuthor ?: source.name
 
     val content: String
-        get() = contentText?.replace("\\[.[0-9]+ chars\\]$".toRegex(), "") ?: description
+        get() = originalContent?.replace("\\[.[0-9]+ chars\\]$".toRegex(), "") ?: description
 }
