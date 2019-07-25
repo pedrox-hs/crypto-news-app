@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
-import com.pedrenrique.cryptonews.core.data.SortType
 import com.pedrenrique.cryptonews.core.ext.*
 import com.pedrenrique.cryptonews.core.platform.Language
 import com.pedrenrique.cryptonews.core.platform.LocaleManager
@@ -151,17 +150,14 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
     private fun onSortOptionClick() {
         RadioOptionsDialog.create {
             requestCode = REQUEST_CODE_CHANGE_SORT
-            selected = newsViewModel.sortType.ordinal
-            items = SortType.values().map { getString(it.displayValue) }
+            selected = newsViewModel.actualSortingMode
+            items = newsViewModel.availableSortingOptions.map { getString(it.displayValue) }
             target = this@NewsFragment
         }.show(supportActivity?.navFragmentManager!!)
     }
 
     private fun onChangeNewsSort(which: Int) {
-        when (SortType.values()[which]) {
-            SortType.PUBLISHED_AT -> newsViewModel.sortByPublishDate()
-            SortType.POPULARITY -> newsViewModel.sortByPopularity()
-        }
+        newsViewModel.setSortingMode(which)
     }
 
     private fun onLanguageOptionClick() {

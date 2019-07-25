@@ -3,7 +3,7 @@ package com.pedrenrique.cryptonews.core.data
 import androidx.annotation.StringRes
 import com.pedrenrique.cryptonews.R
 
-enum class SortType(
+enum class SortingMode(
     val value: String,
     @StringRes
     val displayValue: Int

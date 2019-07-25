@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedrenrique.cryptonews.core.data.Article
 import com.pedrenrique.cryptonews.core.data.PaginatedData
-import com.pedrenrique.cryptonews.core.data.SortType
+import com.pedrenrique.cryptonews.core.data.SortingMode
 import com.pedrenrique.cryptonews.core.domain.ListArticles
 import com.pedrenrique.cryptonews.core.domain.LoadMoreArticles
 import com.pedrenrique.cryptonews.core.exceptions.EmptyResultException
@@ -23,8 +23,21 @@ class NewsViewModel(
 
     val state = MutableLiveData<NewsListState>()
 
-    var sortType = SortType.PUBLISHED_AT
-        private set
+    var actualSortingMode = SortingMode.PUBLISHED_AT.ordinal
+        set(value) {
+            if (value != field && value > 0 && value < availableSortingOptions.size) {
+                field = value
+                refresh()
+            }
+        }
+
+    private var sortingMode: SortingMode
+        get() = availableSortingOptions[actualSortingMode]
+        set(value) {
+            actualSortingMode = value.ordinal
+        }
+
+    val availableSortingOptions = SortingMode.values().asList()
     // endregion
 
     // region Load data
@@ -33,7 +46,7 @@ class NewsViewModel(
         if (value == null || value is NewsListState.Failed) {
             state.value = NewsListState.Requesting
             retrieveData {
-                listArticles(ListArticles.Params(sortType))
+                listArticles(ListArticles.Params(sortingMode))
             }
         }
     }
@@ -44,7 +57,7 @@ class NewsViewModel(
         if (data != null) {
             state.value = NewsListState.RequestingNext(data)
             retrieveData(data) {
-                loadMoreArticles(LoadMoreArticles.Params(page, sortType))
+                loadMoreArticles(LoadMoreArticles.Params(page, sortingMode))
             }
         }
     }
@@ -52,24 +65,14 @@ class NewsViewModel(
     fun refresh() {
         state.value = NewsListState.Requesting
         retrieveData {
-            listArticles(ListArticles.Params(sortType))
+            listArticles(ListArticles.Params(sortingMode))
         }
     }
     // endregion
 
     // region Request sorted data
-    fun sortByPublishDate() {
-        if (sortType != SortType.PUBLISHED_AT) {
-            sortType = SortType.PUBLISHED_AT
-            refresh()
-        }
-    }
-
-    fun sortByPopularity() {
-        if (sortType != SortType.POPULARITY) {
-            sortType = SortType.POPULARITY
-            refresh()
-        }
+    fun setSortingMode(mode: Int) {
+        actualSortingMode = mode
     }
     // endregion
 
