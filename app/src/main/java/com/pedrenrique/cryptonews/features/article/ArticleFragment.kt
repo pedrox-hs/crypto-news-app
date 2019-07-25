@@ -1,5 +1,6 @@
 package com.pedrenrique.cryptonews.features.article
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,6 +15,7 @@ import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
 import com.pedrenrique.cryptonews.core.data.Image
 import com.pedrenrique.cryptonews.core.ext.*
+import com.pedrenrique.cryptonews.core.platform.LocaleManager
 import kotlinx.android.synthetic.main.fragment_article.*
 import java.util.*
 
@@ -37,7 +39,7 @@ class ArticleFragment : Fragment() {
 
     private fun ActionBar.setup() {
         setDisplayHomeAsUpEnabled(true)
-        setTitle(args.article.source.name.toUpperCase(), getString(R.string.subtitle_article))
+        setTitle(args.article.source.name.toLowerCase(), getString(R.string.subtitle_article))
     }
 
     private fun Article.populate() {

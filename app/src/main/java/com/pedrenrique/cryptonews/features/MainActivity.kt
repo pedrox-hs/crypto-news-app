@@ -1,5 +1,6 @@
 package com.pedrenrique.cryptonews.features
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.ext.setTitle
+import com.pedrenrique.cryptonews.core.platform.LocaleManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -36,11 +38,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == android.R.id.home) {
-            onBackPressed()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(LocaleManager.restoreLanguage(base))
     }
+
+    override fun onOptionsItemSelected(item: MenuItem?) =
+        when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
 }

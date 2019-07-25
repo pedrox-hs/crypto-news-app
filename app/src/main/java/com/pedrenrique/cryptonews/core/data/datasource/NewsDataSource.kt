@@ -28,13 +28,14 @@ interface NewsDataSource {
 
         private suspend fun loadPage(page: Int, sort: SortType): PaginatedData<Article> {
             val tz = TimeZone.getTimeZone("UTC")
+
             val fromDate = Calendar.getInstance(tz).resetTime()
             fromDate.add(Calendar.DAY_OF_YEAR, -20)
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd")
             dateFormat.timeZone = tz
 
-            val language = Locale.getDefault().language.takeIf { it in listOf("en", "pt") } ?: "en"
+            val language = Locale.getDefault().language
 
             val response = service.getNews(
                 mapOf(

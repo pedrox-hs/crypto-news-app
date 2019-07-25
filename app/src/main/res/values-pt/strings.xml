@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- region Toolbar titles and subtitles -->
+    <string name="title_news">@string/app_name</string>
+    <string name="title_article">@string/app_name</string>
+    <string name="subtitle_article">Publicado em</string>
+    <!-- endregion -->
+
+    <!-- region Action text -->
+    <string name="menu_sort_by">Ordenar por</string>
+    <string name="menu_change_language">Alterar idioma</string>
+
+    <string name="action_try_again">Tentar novamente</string>
+    <string name="action_load_more">Ver mais</string>
+    <string name="action_continue_reading">Continuar lendo</string>
+    <!-- endregion -->
+
+    <!-- region Text errors-->
+    <string name="title_error_connection">Oops.. problema de conexão</string>
+    <string name="msg_error_connection">Verifique sua internet e tente novamente</string>
+
+    <string name="title_error_unexpected">Oops.. algo deu errado</string>
+    <string name="msg_error_unexpected">Por favor, tente novamente mais tarde.</string>
+
+    <string name="msg_cant_open_article">Infelizmente o artigo não pode ser aberto</string>
+    <!-- endregion -->
+
+    <string name="text_author">por %s</string>
+
+    <string name="text_elapsed_today">Hoje</string>
+    <string name="text_yesterday">Ontem</string>
+    <string name="text_few_days">há %d dias</string>
+    <string name="text_many_days">%2$s %1$d</string>
+
+    <string name="sort_by_publish_date">Data de publicação</string>
+    <string name="sort_by_popularity">Popularidade</string>
+
+    <string name="language_en">Inglês</string>
+    <string name="language_pt">Português</string>
+</resources>

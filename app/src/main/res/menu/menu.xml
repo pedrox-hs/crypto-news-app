@@ -4,6 +4,11 @@
     <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort"
-        android:title="@string/sort_by"
-        app:showAsAction="always" />
+        android:title="@string/menu_sort_by"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_change_language"
+        android:title="@string/menu_change_language"
+        app:showAsAction="never" />
 </menu>

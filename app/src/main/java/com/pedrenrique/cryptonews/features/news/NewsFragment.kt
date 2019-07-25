@@ -14,7 +14,9 @@ import com.pedrenrique.cryptonews.R
 import com.pedrenrique.cryptonews.core.data.Article
 import com.pedrenrique.cryptonews.core.data.SortType
 import com.pedrenrique.cryptonews.core.ext.*
-import com.pedrenrique.cryptonews.core.widget.RadioOptionsDialog
+import com.pedrenrique.cryptonews.core.platform.Language
+import com.pedrenrique.cryptonews.core.platform.LocaleManager
+import com.pedrenrique.cryptonews.core.platform.widget.RadioOptionsDialog
 import com.pedrenrique.cryptonews.features.common.adapter.RecyclerViewAdapter
 import com.pedrenrique.cryptonews.features.common.adapter.ViewParams
 import com.pedrenrique.cryptonews.features.common.listeners.EndlessRecyclerViewScrollListener
@@ -32,6 +34,11 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
     private val RecyclerView.linearLayoutManager: LinearLayoutManager
         get() = layoutManager as LinearLayoutManager
     // endregion
+
+    companion object {
+        private const val REQUEST_CODE_CHANGE_SORT = 1
+        private const val REQUEST_CODE_CHANGE_LANGUAGE = 2
+    }
 
     // region Platform overrides
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,13 +64,18 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
         inflater.inflate(R.menu.menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_sort) {
-            onSortOptionClick()
-            return true
+    override fun onOptionsItemSelected(item: MenuItem) =
+        when (item.itemId) {
+            R.id.action_sort -> {
+                onSortOptionClick()
+                true
+            }
+            R.id.action_change_language -> {
+                onLanguageOptionClick()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
-    }
     // endregion
 
     // region Setup
@@ -76,15 +88,16 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
 
     private fun RecyclerView.setup(adapter: RecyclerViewAdapter<ViewParams>, loadMore: () -> Unit) {
         layoutManager = LinearLayoutManager(context)
-        val endlessScrollListener = EndlessRecyclerViewScrollListener(linearLayoutManager, loadMore)
 
         val decoration = DividerItemDecoration(context, linearLayoutManager.orientation)
         decoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider)!!)
         addItemDecoration(decoration)
 
+        val endlessScrollListener = EndlessRecyclerViewScrollListener(linearLayoutManager, loadMore)
+        addOnScrollListener(endlessScrollListener)
+
         this.adapter = adapter
         setHasFixedSize(true)
-        addOnScrollListener(endlessScrollListener)
     }
 
     private fun setupList() {
@@ -137,16 +150,35 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
     // region User event handlers
     private fun onSortOptionClick() {
         RadioOptionsDialog.create {
+            requestCode = REQUEST_CODE_CHANGE_SORT
             selected = newsViewModel.sortType.ordinal
             items = SortType.values().map { getString(it.displayValue) }
             target = this@NewsFragment
         }.show(supportActivity?.navFragmentManager!!)
     }
 
-    override fun onSelectedOption(which: Int) {
+    private fun onChangeNewsSort(which: Int) {
         when (SortType.values()[which]) {
             SortType.PUBLISHED_AT -> newsViewModel.sortByPublishDate()
             SortType.POPULARITY -> newsViewModel.sortByPopularity()
+        }
+    }
+
+    private fun onLanguageOptionClick() {
+        RadioOptionsDialog.create {
+            requestCode = REQUEST_CODE_CHANGE_LANGUAGE
+            items = Language.values().map { getString(it.displayText) }
+            selected = LocaleManager.getLanguage(context!!).ordinal
+            target = this@NewsFragment
+        }.show(supportActivity?.navFragmentManager!!)
+    }
+
+    private fun onChangeLanguage(which: Int) {
+        val language = Language.values()[which]
+        if (language != LocaleManager.getLanguage(context!!)) {
+            LocaleManager.setLanguage(context!!, language)
+            newsViewModel.refresh()
+            supportActivity?.recreate()
         }
     }
 
@@ -159,6 +191,13 @@ class NewsFragment : Fragment(), NewsAdapter.OnItemClickListener,
 
     override fun onRetryClick() {
         newsViewModel.loadMore()
+    }
+
+    override fun onSelectedOption(requestCode: Int, which: Int) {
+        when (requestCode) {
+            REQUEST_CODE_CHANGE_SORT -> onChangeNewsSort(which)
+            REQUEST_CODE_CHANGE_LANGUAGE -> onChangeLanguage(which)
+        }
     }
     // endregion
 

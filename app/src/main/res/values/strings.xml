@@ -1,18 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Crypto News</string>
+    <string name="app_name" translatable="false">Crypto News</string>
+
+    <!-- region Toolbar titles and subtitles -->
     <string name="title_news">@string/app_name</string>
     <string name="title_article">@string/app_name</string>
     <string name="subtitle_article">Published in</string>
+    <!-- endregion -->
+
+    <!-- region Action text -->
+    <string name="menu_sort_by">Sort By</string>
+    <string name="menu_change_language">Change language</string>
 
     <string name="action_try_again">Try again</string>
     <string name="action_load_more">Load more</string>
     <string name="action_continue_reading">Continue reading</string>
+    <!-- endregion -->
 
+    <!-- region Text errors-->
     <string name="title_error_connection">Oops.. network problem</string>
     <string name="msg_error_connection">Please check your internet connection and try again</string>
 
     <string name="title_error_unexpected">Oops.. something went wrong</string>
     <string name="msg_error_unexpected">Please try again later.</string>
+
+    <string name="msg_cant_open_article">Unfortunately, the article could not be opened</string>
+    <!-- endregion -->
 
     <string name="text_author">by %s</string>
 
@@ -21,9 +34,11 @@
     <string name="text_few_days">%d days ago</string>
     <string name="text_many_days">%1$s %2$d</string>
 
-    <string name="placeholder_article_content">Mussum Ipsum, cacilds vidis litro abertis. Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis! Suco de cevadiss deixa as pessoas mais interessantis. A ordem dos tratores não altera o pão duris. Viva Forevis aptent taciti sociosqu ad litora torquent. Cevadis im ampola pa arma uma pindureta. Leite de capivaris, leite de mula manquis sem cabeça. Em pé sem cair, deitado sem dormir, sentado sem cochilar e fazendo pose. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Aenean aliquam molestie leo, vitae iaculis nisl.</string>
-    <string name="msg_cant_open_article">Unfortunately, the article could not be opened</string>
-    <string name="sort_by">Sort By</string>
     <string name="sort_by_publish_date">Publish date</string>
     <string name="sort_by_popularity">Popularity</string>
+
+    <string name="language_en">English</string>
+    <string name="language_pt">Portuguese</string>
+
+    <string name="placeholder_article_content" translatable="false">Mussum Ipsum, cacilds vidis litro abertis. Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis! Suco de cevadiss deixa as pessoas mais interessantis. A ordem dos tratores não altera o pão duris. Viva Forevis aptent taciti sociosqu ad litora torquent. Cevadis im ampola pa arma uma pindureta. Leite de capivaris, leite de mula manquis sem cabeça. Em pé sem cair, deitado sem dormir, sentado sem cochilar e fazendo pose. Admodum accumsan disputationi eu sit. Vide electram sadipscing et per. Diuretics paradis num copo é motivis de denguis. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Aenean aliquam molestie leo, vitae iaculis nisl.</string>
 </resources>

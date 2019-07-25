@@ -1,4 +1,4 @@
-package com.pedrenrique.cryptonews.core.widget
+package com.pedrenrique.cryptonews.core.platform.widget
 
 import android.app.Dialog
 import android.content.Context
@@ -14,7 +14,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.pedrenrique.cryptonews.R
-import kotlin.collections.ArrayList
 
 
 class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
@@ -24,6 +23,7 @@ class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
 
         const val EXTRA_SELECTED = "EXTRA_SELECTED"
         const val EXTRA_ITEMS = "EXTRA_ITEMS"
+        const val EXTRA_REQUEST_CODE = "EXTRA_REQUEST_CODE"
 
         private const val REQUEST_CODE = 1
 
@@ -39,6 +39,9 @@ class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
     private val selectedItem: Int
         get() = arguments?.getInt(EXTRA_SELECTED, 0) ?: 0
 
+    private val requestCode: Int
+        get() = arguments?.getInt(EXTRA_REQUEST_CODE, REQUEST_CODE) ?: REQUEST_CODE
+
     private val adapter by lazy {
         RadioOptionsAdapter(
             context!!,
@@ -53,7 +56,7 @@ class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         AlertDialog.Builder(context!!)
-            .setTitle(R.string.sort_by)
+            .setTitle(R.string.menu_sort_by)
             .setAdapter(adapter, null)
             .setPositiveButton(android.R.string.ok, this)
             .setNegativeButton(android.R.string.cancel, this)
@@ -67,12 +70,15 @@ class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     private fun setResult(selected: Int) {
         val listener = (targetFragment ?: activity) as? OnSelectedItemListener
-        listener?.onSelectedOption(selected) ?: Log.e(TAG, "Unable to send result, implement #OnSelectedItemListener")
+        listener?.onSelectedOption(requestCode, selected) ?: Log.e(
+            TAG,
+            "Unable to send result, implement `OnSelectedItemListener` or set `target`"
+        )
         dismiss()
     }
 
     interface OnSelectedItemListener {
-        fun onSelectedOption(which: Int)
+        fun onSelectedOption(requestCode: Int, which: Int)
     }
 
     private class RadioOptionsAdapter(
@@ -110,9 +116,10 @@ class RadioOptionsDialog : DialogFragment(), DialogInterface.OnClickListener {
                 arguments = Bundle().apply {
                     putInt(EXTRA_SELECTED, selected)
                     putStringArrayList(EXTRA_ITEMS, ArrayList(items))
+                    putInt(EXTRA_REQUEST_CODE, this@Builder.requestCode)
                 }
                 if (target != null)
-                    setTargetFragment(target, requestCode)
+                    setTargetFragment(target, this@Builder.requestCode)
                 this.isCancelable = this@Builder.isCancelable
             }
     }
