@@ -1,6 +1,6 @@
 # Noticias sobre criptomoedas
 
-> Repositório com a solução do desafio que para desenvolvimento de aplicativo para Android consumindo a API [News API] para exibir noticias sobre criptomoedas.
+> Repositório com a solução do desafio de desenvolvimento de aplicativo para Android que consuma a [News API] buscando noticias sobre criptomoedas.
 
 ## Demo
 
